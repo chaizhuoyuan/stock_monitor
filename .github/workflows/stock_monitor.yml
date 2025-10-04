@@ -29,20 +29,19 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r stock_monitor/requirements.txt
+        pip install -r requirements.txt
     
     - name: Create config from secrets
       env:
         CONFIG: ${{ secrets.STOCK_MONITOR_CONFIG }}
         STOCK_LIST: ${{ secrets.STOCK_LIST }}
       run: |
-        mkdir -p stock_monitor/config
-        echo "$CONFIG" > stock_monitor/config/secrets.json
-        echo "$STOCK_LIST" > stock_monitor/Targetstocklist.csv
+        mkdir -p config
+        echo "$CONFIG" > config/secrets.json
+        echo "$STOCK_LIST" > Targetstocklist.csv
     
     - name: Run stock monitor
       run: |
-        cd stock_monitor
         python src/stock_monitor.py --run-once
     
     - name: Upload logs
@@ -50,5 +49,5 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: stock-monitor-logs
-        path: stock_monitor/logs/
+        path: logs/
         retention-days: 30
