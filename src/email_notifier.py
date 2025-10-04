@@ -36,12 +36,15 @@ class EmailNotifier:
             msg.attach(html_part)
             
             with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
+                server.set_debuglevel(1)  # Enable debug output
                 if self.use_tls:
                     server.starttls()
                 server.login(self.from_email, self.password)
                 server.send_message(msg)
             
             logger.info(f"Alert email sent successfully to {', '.join(self.receivers)}")
+            logger.info(f"Email subject: {subject}")
+            logger.info(f"Number of alerts: {len(alerts)}")
             return True
             
         except Exception as e:

@@ -19,8 +19,13 @@ class StockAnalyzer:
         return df
     
     def check_ma_breach(self, df: pd.DataFrame) -> Dict[str, bool]:
-        if df.empty or len(df) < max(self.ma_periods):
-            logger.warning("Insufficient data for MA calculation")
+        if df.empty:
+            logger.warning("No data available for MA calculation")
+            return {}
+        
+        min_required = max(self.ma_periods)
+        if len(df) < min_required:
+            logger.debug(f"Only {len(df)} days of data available, need {min_required} for full MA calculation")
             return {}
         
         df_with_ma = self.calculate_moving_averages(df)

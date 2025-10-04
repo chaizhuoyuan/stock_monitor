@@ -10,7 +10,7 @@
     "receivers": ["receiver1@gmail.com", "receiver2@gmail.com"],
     "use_tls": true
   },
-  "stock_list_path": "/path/to/your/Targetstocklist.csv",
+  "stock_list_path": "Targetstocklist.csv",
   "schedule": {
     "run_time": "15:30"
   }

@@ -58,7 +58,7 @@ class StockMonitor:
             stock_codes = self.stock_reader.read_stock_codes()
             logger.info(f"Monitoring {len(stock_codes)} stocks")
             
-            stock_data = self.tushare_client.get_multiple_stocks_data(stock_codes, days=30)
+            stock_data = self.tushare_client.get_multiple_stocks_data(stock_codes, days=45)
             logger.info(f"Retrieved data for {len(stock_data)} stocks")
             
             alerts = self.analyzer.analyze_multiple_stocks(stock_data)
