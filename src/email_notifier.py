@@ -36,7 +36,7 @@ class EmailNotifier:
             msg.attach(html_part)
             
             with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
-                server.set_debuglevel(1)  # Enable debug output
+                # server.set_debuglevel(1)  # Enable debug output (disabled for cleaner logs)
                 if self.use_tls:
                     server.starttls()
                 server.login(self.from_email, self.password)
@@ -50,6 +50,18 @@ class EmailNotifier:
         except Exception as e:
             logger.error(f"Failed to send email: {e}")
             return False
+    
+    def _generate_summary(self, alerts: List[Dict]) -> str:
+        """Generate a concise summary of breached stocks"""
+        summary_lines = []
+        
+        for alert in alerts:
+            stock_code = alert['stock_code']
+            breached_periods = [str(ma['ma_period']) for ma in alert['breached_mas']]
+            breached_text = '、'.join(breached_periods)
+            summary_lines.append(f"{stock_code} 突破{breached_text}日均线")
+        
+        return '<br>'.join(summary_lines)
     
     def _format_alert_body(self, alerts: List[Dict]) -> str:
         html = f"""
@@ -73,6 +85,12 @@ class EmailNotifier:
                 <p><strong>触发警报股票数:</strong>{len(alerts)} 只</p>
             </div>
             
+            <div style="background-color: #e3f2fd; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                <h3>快速摘要</h3>
+                <p>{self._generate_summary(alerts)}</p>
+            </div>
+            
+            <h3>详细信息</h3>
             <table>
                 <tr>
                     <th>股票代码</th>

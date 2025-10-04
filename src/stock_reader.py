@@ -30,8 +30,19 @@ class StockReader:
             
             stock_codes = [self._format_stock_code(code) for code in stock_codes]
             
-            logger.info(f"Read {len(stock_codes)} stock codes from {self.csv_path}")
-            return stock_codes
+            # Remove duplicates while preserving order
+            seen = set()
+            unique_codes = []
+            for code in stock_codes:
+                if code not in seen:
+                    seen.add(code)
+                    unique_codes.append(code)
+            
+            if len(unique_codes) < len(stock_codes):
+                logger.info(f"Removed {len(stock_codes) - len(unique_codes)} duplicate stock codes")
+            
+            logger.info(f"Read {len(unique_codes)} unique stock codes from {self.csv_path}")
+            return unique_codes
             
         except FileNotFoundError:
             logger.error(f"CSV file not found: {self.csv_path}")
