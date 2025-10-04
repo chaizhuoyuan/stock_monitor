@@ -24,7 +24,7 @@ This should contain your entire configuration JSON:
     "smtp_port": 587,
     "from_email": "chatgptt07@gmail.com",
     "password": "dpzudrpsdjrsvxgb",
-    "receivers": ["chaizhuoyuan@gmail.com", "felixochai@gmail.com"],
+    "receivers": ["chaizhuoyuan@gmail.com", "felixochai@gmail.com", "1914861911@qq.com"],
     "use_tls": true
   },
   "stock_list_path": "Targetstocklist.csv",
